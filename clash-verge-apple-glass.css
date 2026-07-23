@@ -1,0 +1,2964 @@
+/*
+ * Clash Verge Rev — Apple Glass Adaptive V8
+ * Target: Clash Verge Rev 2.5.x / current dev UI structure
+ * Mode: Automatic Light / Dark / System
+ *
+ * Suggested app theme colors:
+ * Primary:   #007AFF
+ * Secondary: #FF9F0A
+ * Background:#F5F5F7
+ * Text:      #1D1D1F
+ * Subtext:   #6E6E73
+ */
+
+/* =========================================================
+   0. Apple design tokens
+   ========================================================= */
+
+.layout {
+  --apple-blue: #007aff;
+  --apple-blue-hover: #0071e3;
+  --apple-green: #34c759;
+  --apple-red: #ff3b30;
+  --apple-orange: #ff9500;
+
+  --apple-text: #1d1d1f;
+  --apple-text-2: #424245;
+  --apple-text-3: #6e6e73;
+
+  --apple-bg: #f5f5f7;
+  --apple-sidebar: rgba(246, 246, 248, 0.88);
+  --apple-toolbar: rgba(255, 255, 255, 0.78);
+  --apple-card: rgba(255, 255, 255, 0.94);
+  --apple-card-solid: #ffffff;
+  --apple-control: rgba(118, 118, 128, 0.08);
+  --apple-control-hover: rgba(118, 118, 128, 0.14);
+  --apple-selected: rgba(0, 122, 255, 0.13);
+
+  --apple-border: rgba(0, 0, 0, 0.08);
+  --apple-border-strong: rgba(0, 0, 0, 0.13);
+  --apple-divider: rgba(60, 60, 67, 0.16);
+
+  --apple-shadow-card:
+    0 1px 2px rgba(0, 0, 0, 0.04),
+    0 8px 28px rgba(0, 0, 0, 0.07);
+  --apple-shadow-float:
+    0 12px 40px rgba(0, 0, 0, 0.16),
+    0 2px 8px rgba(0, 0, 0, 0.08);
+
+  --apple-radius-window: 14px;
+  --apple-radius-card: 18px;
+  --apple-radius-control: 11px;
+  --apple-radius-small: 8px;
+
+  color-scheme: light;
+  color: var(--apple-text) !important;
+  background: var(--apple-bg) !important;
+  font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    "SF Pro Display",
+    "SF Pro Text",
+    "PingFang SC",
+    "PingFang TC",
+    "Segoe UI Variable Text",
+    "Segoe UI",
+    "Microsoft YaHei UI",
+    sans-serif !important;
+  letter-spacing: -0.01em;
+}
+
+/* Make the window itself feel like a macOS app panel */
+.layout.windows,
+.layout.linux,
+.layout.unknown {
+  border-radius: var(--apple-radius-window) !important;
+  overflow: hidden !important;
+  border: 1px solid var(--apple-border-strong) !important;
+  background: var(--apple-bg) !important;
+}
+
+/* Disable Material ripple — Apple controls do not use ink ripples */
+.layout .MuiTouchRipple-root {
+  display: none !important;
+}
+
+/* =========================================================
+   1. Main shell and sidebar
+   ========================================================= */
+
+.layout .layout-content {
+  background: var(--apple-bg) !important;
+}
+
+.layout .layout-content__left {
+  flex: 0 0 224px !important;
+  width: 224px !important;
+  min-width: 224px !important;
+  max-width: 224px !important;
+  padding: 0 10px 10px !important;
+  border-right: 1px solid var(--apple-divider) !important;
+  background: var(--apple-sidebar) !important;
+  -webkit-backdrop-filter: saturate(180%) blur(28px);
+  backdrop-filter: saturate(180%) blur(28px);
+}
+
+.layout .layout-content__right {
+  background: var(--apple-bg) !important;
+}
+
+.layout .layout-content__right .the-content {
+  top: 0 !important;
+  right: 0 !important;
+}
+
+.layout .layout-content__left .the-logo {
+  flex: 0 0 76px !important;
+  height: 76px !important;
+  margin: 0 !important;
+  padding: 18px 14px 12px !important;
+  border: 0 !important;
+  box-sizing: border-box !important;
+}
+
+.layout .layout-content__left .the-logo > div {
+  height: 42px !important;
+  align-items: center !important;
+}
+
+.layout .layout-content__left .the-logo > div > svg:first-child {
+  width: 34px !important;
+  height: 34px !important;
+  margin: 0 8px 0 0 !important;
+  filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.08));
+}
+
+.layout .layout-content__left .the-logo > div > svg:last-child {
+  width: auto !important;
+  max-width: 140px !important;
+  height: 28px !important;
+}
+
+/* Sidebar menu */
+.layout .the-menu {
+  padding: 4px 2px 8px !important;
+}
+
+.layout .the-menu .MuiListItem-root {
+  margin: 2px 0 !important;
+  padding: 0 !important;
+}
+
+.layout .the-menu .MuiListItemButton-root {
+  min-height: 43px !important;
+  margin: 0 !important;
+  padding: 0 13px !important;
+  border-radius: 10px !important;
+  color: var(--apple-text-2) !important;
+  transition:
+    background-color 140ms ease,
+    color 140ms ease,
+    transform 140ms ease !important;
+}
+
+.layout .the-menu .MuiListItemButton-root:hover {
+  background: rgba(118, 118, 128, 0.09) !important;
+  color: var(--apple-text) !important;
+}
+
+.layout .the-menu .MuiListItemButton-root:active {
+  transform: scale(0.985);
+}
+
+.layout .the-menu .MuiListItemButton-root.Mui-selected,
+.layout .the-menu .MuiListItemButton-root.Mui-selected:hover {
+  color: var(--apple-blue) !important;
+  background: var(--apple-selected) !important;
+  box-shadow: inset 0 0 0 1px rgba(0, 122, 255, 0.08) !important;
+}
+
+.layout .the-menu .MuiListItemIcon-root {
+  min-width: 39px !important;
+  color: currentColor !important;
+}
+
+.layout .the-menu .MuiListItemIcon-root svg {
+  width: 23px !important;
+  height: 23px !important;
+  stroke-width: 1.75;
+}
+
+.layout .the-menu .MuiListItemText-primary {
+  font-size: 15px !important;
+  font-weight: 520 !important;
+  letter-spacing: -0.01em !important;
+  color: currentColor !important;
+}
+
+.layout .the-menu .Mui-selected .MuiListItemText-primary {
+  font-weight: 650 !important;
+  color: var(--apple-blue) !important;
+}
+
+/* Sidebar traffic widget */
+.layout .the-traffic {
+  flex: 0 0 auto !important;
+  margin: 4px 2px 0 !important;
+  padding-top: 10px !important;
+  border-top: 1px solid var(--apple-divider) !important;
+}
+
+.layout .the-traffic > div {
+  margin: 0 !important;
+  padding: 0 10px 4px !important;
+}
+
+/* Collapsed sidebar */
+.layout.layout--nav-collapsed {
+  --layout-nav-collapsed-width: 74px !important;
+  --layout-nav-item-size: 46px !important;
+  --layout-nav-item-radius: 12px !important;
+}
+
+.layout.layout--nav-collapsed .layout-content__left {
+  background: var(--apple-sidebar) !important;
+  border-right: 1px solid var(--apple-divider) !important;
+}
+
+.layout.layout--nav-collapsed .the-menu .MuiListItemButton-root {
+  border-radius: 12px !important;
+}
+
+/* =========================================================
+   2. Unified macOS-style toolbar
+   ========================================================= */
+
+.layout .base-page > header {
+  flex: 0 0 68px !important;
+  min-height: 68px !important;
+  padding: 0 24px !important;
+  border-bottom: 1px solid var(--apple-divider) !important;
+  background: var(--apple-toolbar) !important;
+  -webkit-backdrop-filter: saturate(180%) blur(24px);
+  backdrop-filter: saturate(180%) blur(24px);
+  box-sizing: border-box !important;
+  z-index: 20;
+}
+
+.layout .base-page > header > .MuiTypography-root:first-child {
+  color: var(--apple-text) !important;
+  font-size: 24px !important;
+  line-height: 1.15 !important;
+  font-weight: 720 !important;
+  letter-spacing: -0.035em !important;
+}
+
+.layout .base-page > header .MuiIconButton-root {
+  width: 34px !important;
+  height: 34px !important;
+  margin-left: 4px !important;
+  border-radius: 50% !important;
+  color: var(--apple-text-2) !important;
+  background: transparent !important;
+}
+
+.layout .base-page > header .MuiIconButton-root:hover {
+  color: var(--apple-text) !important;
+  background: var(--apple-control-hover) !important;
+}
+
+.layout .base-page > header .MuiIconButton-root:active {
+  transform: scale(0.94);
+}
+
+/* =========================================================
+   3. Page canvas and spacing
+   ========================================================= */
+
+.layout .base-container {
+  background: var(--apple-bg) !important;
+}
+
+.layout .base-container > section {
+  padding: 18px 0 24px !important;
+  background:
+    radial-gradient(circle at 13% -10%, rgba(0, 122, 255, 0.055), transparent 31%),
+    radial-gradient(circle at 88% 0%, rgba(175, 82, 222, 0.035), transparent 27%),
+    var(--apple-bg) !important;
+  scrollbar-gutter: stable !important;
+}
+
+.layout .base-content {
+  width: 100% !important;
+  max-width: none !important;
+  min-width: 0 !important;
+  margin: 0 !important;
+  padding: 0 18px !important;
+  box-sizing: border-box !important;
+}
+
+/*
+ * Do not overwrite MUI Grid's internal --Grid-rowSpacing /
+ * --Grid-columnSpacing variables here. The application uses those
+ * variables to calculate responsive item widths. Overwriting only the
+ * parent values can make two half-width cards exceed one row by a few
+ * pixels and wrap into a single column.
+ */
+.layout .base-content > .MuiGrid-container {
+  min-width: 0 !important;
+  max-width: 100% !important;
+}
+
+/* =========================================================
+   4. Home cards — deeper than a generic theme recolor
+   ========================================================= */
+
+/* EnhancedCard root */
+.layout
+  .base-content
+  > .MuiGrid-container
+  > .MuiGrid-root
+  > .MuiBox-root {
+  overflow: hidden !important;
+  border: 1px solid var(--apple-border) !important;
+  border-radius: var(--apple-radius-card) !important;
+  background: var(--apple-card) !important;
+  -webkit-backdrop-filter: saturate(160%) blur(20px);
+  backdrop-filter: saturate(160%) blur(20px);
+  box-shadow: var(--apple-shadow-card) !important;
+  transition:
+    transform 180ms ease,
+    border-color 180ms ease,
+    box-shadow 180ms ease !important;
+}
+
+/* A very subtle lift without turning the app into a web dashboard */
+.layout
+  .base-content
+  > .MuiGrid-container
+  > .MuiGrid-root
+  > .MuiBox-root:hover {
+  border-color: rgba(0, 0, 0, 0.11) !important;
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.04),
+    0 11px 34px rgba(0, 0, 0, 0.085) !important;
+}
+
+/* EnhancedCard header */
+.layout
+  .base-content
+  > .MuiGrid-container
+  > .MuiGrid-root
+  > .MuiBox-root
+  > .MuiBox-root:first-child {
+  min-height: 62px !important;
+  padding: 10px 16px !important;
+  border-bottom: 1px solid var(--apple-divider) !important;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.74), rgba(255, 255, 255, 0.36))
+    !important;
+  box-sizing: border-box !important;
+}
+
+/* Title-side icon tile */
+.layout
+  .base-content
+  > .MuiGrid-container
+  > .MuiGrid-root
+  > .MuiBox-root
+  > .MuiBox-root:first-child
+  > .MuiBox-root:first-child
+  > .MuiBox-root:first-child {
+  width: 36px !important;
+  height: 36px !important;
+  margin-right: 12px !important;
+  border: 1px solid rgba(0, 122, 255, 0.07) !important;
+  border-radius: 10px !important;
+}
+
+/* Card titles */
+.layout
+  .base-content
+  > .MuiGrid-container
+  > .MuiGrid-root
+  > .MuiBox-root
+  > .MuiBox-root:first-child
+  .MuiTypography-h6 {
+  color: var(--apple-text) !important;
+  font-size: 17px !important;
+  line-height: 1.2 !important;
+  font-weight: 650 !important;
+  letter-spacing: -0.025em !important;
+}
+
+/* EnhancedCard body */
+.layout
+  .base-content
+  > .MuiGrid-container
+  > .MuiGrid-root
+  > .MuiBox-root
+  > .MuiBox-root:last-child {
+  padding: 18px !important;
+}
+
+/* Cards with an internal full-width canvas still stay clipped cleanly */
+.layout
+  .base-content
+  > .MuiGrid-container
+  > .MuiGrid-root
+  > .MuiBox-root
+  canvas {
+  border-radius: 12px !important;
+}
+
+/* =========================================================
+   5. Buttons and icon buttons
+   ========================================================= */
+
+.layout .MuiButton-root {
+  min-height: 34px !important;
+  padding: 6px 14px !important;
+  border-radius: 10px !important;
+  font-size: 14px !important;
+  line-height: 1.2 !important;
+  font-weight: 600 !important;
+  letter-spacing: -0.01em !important;
+  text-transform: none !important;
+  transition:
+    background-color 140ms ease,
+    border-color 140ms ease,
+    color 140ms ease,
+    transform 100ms ease !important;
+}
+
+.layout .MuiButton-root:active {
+  transform: scale(0.975);
+}
+
+.layout .MuiButton-containedPrimary {
+  color: #fff !important;
+  border: 1px solid rgba(0, 0, 0, 0.04) !important;
+  background: linear-gradient(180deg, #0a84ff, var(--apple-blue)) !important;
+  box-shadow:
+    0 1px 1px rgba(0, 0, 0, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.18) !important;
+}
+
+.layout .MuiButton-containedPrimary:hover {
+  background: linear-gradient(180deg, #168bff, var(--apple-blue-hover)) !important;
+}
+
+.layout .MuiButton-outlined {
+  color: var(--apple-blue) !important;
+  border-color: rgba(0, 122, 255, 0.34) !important;
+  background: rgba(255, 255, 255, 0.72) !important;
+}
+
+.layout .MuiButton-outlined:hover {
+  border-color: rgba(0, 122, 255, 0.5) !important;
+  background: rgba(0, 122, 255, 0.07) !important;
+}
+
+.layout .MuiButton-text {
+  color: var(--apple-blue) !important;
+}
+
+.layout .MuiIconButton-root {
+  border-radius: 50% !important;
+  transition:
+    background-color 140ms ease,
+    color 140ms ease,
+    transform 100ms ease !important;
+}
+
+.layout .MuiIconButton-root:hover {
+  background: var(--apple-control-hover) !important;
+}
+
+.layout .MuiIconButton-root:active {
+  transform: scale(0.93);
+}
+
+.layout .MuiButton-root.Mui-focusVisible,
+.layout .MuiIconButton-root.Mui-focusVisible,
+.layout .MuiListItemButton-root.Mui-focusVisible {
+  box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.24) !important;
+}
+
+
+/* =========================================================
+   5.1 Header mode group — separated Apple-style segments
+   ========================================================= */
+
+/*
+ * MUI ButtonGroup normally removes the inner radii and overlaps borders.
+ * That behavior looked cramped after the Apple rounding was applied.
+ * Keep the logical group, but render every option as an independent segment.
+ */
+.layout .base-page > header .MuiButtonGroup-root {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 7px !important;
+  padding: 0 !important;
+  overflow: visible !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.layout .base-page > header .MuiButtonGroup-root .MuiButton-root,
+.layout .base-page > header .MuiButtonGroup-root .MuiButtonGroup-grouped,
+.layout .base-page > header .MuiButtonGroup-root .MuiButtonGroup-firstButton,
+.layout .base-page > header .MuiButtonGroup-root .MuiButtonGroup-middleButton,
+.layout .base-page > header .MuiButtonGroup-root .MuiButtonGroup-lastButton {
+  min-width: 70px !important;
+  height: 38px !important;
+  margin: 0 !important;
+  border: 1px solid rgba(0, 122, 255, 0.32) !important;
+  border-radius: 10px !important;
+  background-clip: padding-box !important;
+}
+
+/* Undo MUI's connected-border overlap rules. */
+.layout
+  .base-page
+  > header
+  .MuiButtonGroup-root
+  .MuiButtonGroup-grouped:not(:first-of-type),
+.layout
+  .base-page
+  > header
+  .MuiButtonGroup-root
+  .MuiButton-root:not(:first-of-type) {
+  margin-left: 0 !important;
+  border-left: 1px solid rgba(0, 122, 255, 0.32) !important;
+}
+
+.layout
+  .base-page
+  > header
+  .MuiButtonGroup-root
+  .MuiButtonGroup-grouped:not(:last-of-type),
+.layout
+  .base-page
+  > header
+  .MuiButtonGroup-root
+  .MuiButton-root:not(:last-of-type) {
+  border-right: 1px solid rgba(0, 122, 255, 0.32) !important;
+}
+
+/* Selected segment */
+.layout
+  .base-page
+  > header
+  .MuiButtonGroup-root
+  .MuiButton-contained,
+.layout
+  .base-page
+  > header
+  .MuiButtonGroup-root
+  .MuiButton-containedPrimary {
+  color: #fff !important;
+  border-color: var(--apple-blue) !important;
+  background: linear-gradient(180deg, #0a84ff, var(--apple-blue)) !important;
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
+}
+
+/* Inactive segments */
+.layout
+  .base-page
+  > header
+  .MuiButtonGroup-root
+  .MuiButton-outlined {
+  color: var(--apple-blue) !important;
+  background: rgba(255, 255, 255, 0.68) !important;
+}
+
+.layout
+  .base-page
+  > header
+  .MuiButtonGroup-root
+  .MuiButton-outlined:hover {
+  border-color: rgba(0, 122, 255, 0.48) !important;
+  background: rgba(0, 122, 255, 0.07) !important;
+}
+
+/* Keep the separate "chain proxy" action visually distinct. */
+.layout .base-page > header .MuiButtonGroup-root + .MuiButton-root {
+  margin-left: 4px !important;
+}
+
+/* =========================================================
+   6. Inputs, selects and search fields
+   ========================================================= */
+
+.layout .MuiInputBase-root,
+.layout .MuiOutlinedInput-root,
+.layout .MuiFilledInput-root {
+  min-height: 38px !important;
+  border-radius: var(--apple-radius-control) !important;
+  background: rgba(255, 255, 255, 0.78) !important;
+  transition:
+    background-color 140ms ease,
+    box-shadow 140ms ease !important;
+}
+
+.layout .MuiOutlinedInput-notchedOutline {
+  border-color: var(--apple-border-strong) !important;
+  border-width: 1px !important;
+  border-radius: var(--apple-radius-control) !important;
+}
+
+.layout .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline {
+  border-color: rgba(0, 0, 0, 0.2) !important;
+}
+
+.layout .MuiOutlinedInput-root.Mui-focused {
+  background: #fff !important;
+  box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.2) !important;
+}
+
+.layout .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+  border-color: var(--apple-blue) !important;
+}
+
+.layout .MuiInputLabel-root {
+  color: var(--apple-text-3) !important;
+}
+
+.layout .MuiInputLabel-root.Mui-focused {
+  color: var(--apple-blue) !important;
+}
+
+.layout .MuiInputBase-input {
+  color: var(--apple-text) !important;
+  font-size: 14px !important;
+  letter-spacing: -0.01em !important;
+}
+
+.layout .MuiInputBase-input::placeholder {
+  color: #8e8e93 !important;
+  opacity: 1 !important;
+}
+
+.layout .MuiSelect-select {
+  padding-top: 9px !important;
+  padding-bottom: 9px !important;
+}
+
+/* =========================================================
+   7. Apple-style switches, checkboxes and radio controls
+   ========================================================= */
+
+.layout .MuiSwitch-root {
+  width: 48px !important;
+  height: 28px !important;
+  padding: 2px !important;
+  overflow: visible !important;
+}
+
+.layout .MuiSwitch-switchBase {
+  padding: 4px !important;
+  color: #fff !important;
+  transition:
+    transform 180ms cubic-bezier(0.25, 0.1, 0.25, 1),
+    color 180ms ease !important;
+}
+
+.layout .MuiSwitch-thumb {
+  width: 20px !important;
+  height: 20px !important;
+  background: #fff !important;
+  box-shadow:
+    0 2px 5px rgba(0, 0, 0, 0.2),
+    0 1px 1px rgba(0, 0, 0, 0.08) !important;
+}
+
+.layout .MuiSwitch-track {
+  border-radius: 14px !important;
+  opacity: 1 !important;
+  background: #e4e4e7 !important;
+  border: 1px solid rgba(0, 0, 0, 0.06) !important;
+}
+
+.layout .MuiSwitch-switchBase.Mui-checked {
+  color: #fff !important;
+  transform: translateX(20px) !important;
+}
+
+.layout .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track {
+  opacity: 1 !important;
+  background: var(--apple-green) !important;
+  border-color: transparent !important;
+}
+
+.layout .MuiCheckbox-root,
+.layout .MuiRadio-root {
+  color: #8e8e93 !important;
+}
+
+.layout .MuiCheckbox-root.Mui-checked,
+.layout .MuiRadio-root.Mui-checked {
+  color: var(--apple-blue) !important;
+}
+
+/* =========================================================
+   8. Segmented controls used by proxy/TUN and Clash mode
+   ========================================================= */
+
+.layout
+  .base-content
+  > .MuiGrid-container
+  > .MuiGrid-root
+  > .MuiBox-root
+  > .MuiBox-root:last-child
+  .MuiStack-root {
+  gap: 7px !important;
+}
+
+/* The active segment keeps the app's primary fill; inactive segments
+   become Apple-like raised segments. */
+.layout
+  .base-content
+  > .MuiGrid-container
+  > .MuiGrid-root
+  > .MuiBox-root
+  > .MuiBox-root:last-child
+  .MuiStack-root
+  > .MuiPaper-root {
+  min-height: 40px !important;
+  padding: 8px 15px !important;
+  border: 1px solid var(--apple-border) !important;
+  border-radius: 11px !important;
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.035),
+    inset 0 1px 0 rgba(255, 255, 255, 0.45) !important;
+}
+
+/* Description boxes below segmented controls */
+.layout
+  .base-content
+  > .MuiGrid-container
+  > .MuiGrid-root
+  > .MuiBox-root
+  > .MuiBox-root:last-child
+  .MuiTypography-caption[style*="text-align"] {
+  min-height: 38px !important;
+  border-color: rgba(0, 122, 255, 0.26) !important;
+  border-radius: 10px !important;
+  color: var(--apple-text-3) !important;
+  background: rgba(0, 122, 255, 0.035) !important;
+}
+
+/* =========================================================
+   9. Chips, badges and progress indicators
+   ========================================================= */
+
+.layout .MuiChip-root {
+  height: 25px !important;
+  border-radius: 999px !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  letter-spacing: 0 !important;
+}
+
+.layout .MuiChip-outlined {
+  color: var(--apple-text-2) !important;
+  border-color: rgba(60, 60, 67, 0.25) !important;
+  background: rgba(255, 255, 255, 0.55) !important;
+}
+
+.layout .MuiLinearProgress-root {
+  height: 7px !important;
+  border-radius: 999px !important;
+  background: rgba(0, 122, 255, 0.12) !important;
+  overflow: hidden !important;
+}
+
+.layout .MuiLinearProgress-bar {
+  border-radius: 999px !important;
+  background: linear-gradient(90deg, #0a84ff, var(--apple-blue)) !important;
+}
+
+.layout .MuiCircularProgress-root {
+  color: var(--apple-blue) !important;
+}
+
+/* =========================================================
+   10. Dialogs, menus, popovers and tooltips
+   ========================================================= */
+
+.layout .MuiBackdrop-root {
+  background: rgba(0, 0, 0, 0.22) !important;
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+}
+
+.layout .MuiDialog-paper {
+  overflow: hidden !important;
+  border: 1px solid var(--apple-border) !important;
+  border-radius: 20px !important;
+  background: rgba(255, 255, 255, 0.96) !important;
+  -webkit-backdrop-filter: saturate(180%) blur(28px);
+  backdrop-filter: saturate(180%) blur(28px);
+  box-shadow: var(--apple-shadow-float) !important;
+}
+
+.layout .MuiDialogTitle-root {
+  padding: 20px 22px 12px !important;
+  color: var(--apple-text) !important;
+  font-size: 20px !important;
+  font-weight: 700 !important;
+  letter-spacing: -0.025em !important;
+}
+
+.layout .MuiDialogContent-root {
+  padding: 10px 22px 20px !important;
+}
+
+.layout .MuiDialogActions-root {
+  padding: 12px 18px 18px !important;
+  border-top: 1px solid var(--apple-divider) !important;
+}
+
+.layout .MuiPopover-paper,
+.layout .MuiMenu-paper {
+  padding: 5px !important;
+  overflow: hidden !important;
+  border: 1px solid var(--apple-border) !important;
+  border-radius: 14px !important;
+  background: rgba(255, 255, 255, 0.96) !important;
+  -webkit-backdrop-filter: saturate(180%) blur(24px);
+  backdrop-filter: saturate(180%) blur(24px);
+  box-shadow: var(--apple-shadow-float) !important;
+}
+
+.layout .MuiMenuItem-root {
+  min-height: 36px !important;
+  margin: 1px 0 !important;
+  border-radius: 9px !important;
+  font-size: 14px !important;
+}
+
+.layout .MuiMenuItem-root:hover,
+.layout .MuiMenuItem-root.Mui-selected {
+  background: var(--apple-selected) !important;
+}
+
+.layout .MuiTooltip-tooltip {
+  padding: 7px 10px !important;
+  border-radius: 8px !important;
+  color: #fff !important;
+  background: rgba(28, 28, 30, 0.92) !important;
+  font-size: 12px !important;
+  line-height: 1.35 !important;
+  box-shadow: 0 5px 18px rgba(0, 0, 0, 0.18) !important;
+}
+
+/* =========================================================
+   11. Lists, tables, tabs and accordions across other pages
+   ========================================================= */
+
+.layout .base-container .MuiCard-root,
+.layout .base-container .MuiAccordion-root,
+.layout .base-container .MuiTableContainer-root {
+  border: 1px solid var(--apple-border) !important;
+  border-radius: 16px !important;
+  background: var(--apple-card) !important;
+  box-shadow: var(--apple-shadow-card) !important;
+}
+
+.layout .MuiListItemButton-root {
+  border-radius: 10px !important;
+}
+
+.layout .base-container .MuiListItemButton-root:hover {
+  background: rgba(118, 118, 128, 0.08) !important;
+}
+
+.layout .MuiTableCell-root {
+  padding: 11px 14px !important;
+  border-bottom-color: var(--apple-divider) !important;
+  color: var(--apple-text-2) !important;
+  font-size: 13px !important;
+}
+
+.layout .MuiTableHead-root .MuiTableCell-root {
+  color: var(--apple-text-3) !important;
+  background: rgba(118, 118, 128, 0.055) !important;
+  font-size: 12px !important;
+  font-weight: 650 !important;
+  text-transform: none !important;
+}
+
+.layout .MuiTableRow-root:hover .MuiTableCell-root {
+  background: rgba(0, 122, 255, 0.035) !important;
+}
+
+.layout .MuiTabs-root {
+  min-height: 38px !important;
+}
+
+.layout .MuiTab-root {
+  min-height: 38px !important;
+  padding: 7px 14px !important;
+  color: var(--apple-text-3) !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  text-transform: none !important;
+}
+
+.layout .MuiTab-root.Mui-selected {
+  color: var(--apple-blue) !important;
+}
+
+.layout .MuiTabs-indicator {
+  height: 3px !important;
+  border-radius: 999px 999px 0 0 !important;
+  background: var(--apple-blue) !important;
+}
+
+.layout .MuiAccordion-root::before {
+  display: none !important;
+}
+
+.layout .MuiAccordionSummary-root {
+  min-height: 48px !important;
+}
+
+.layout .MuiAccordionDetails-root {
+  padding: 8px 16px 16px !important;
+}
+
+/* =========================================================
+   12. Alerts, snackbars, dividers and small refinements
+   ========================================================= */
+
+.layout .MuiAlert-root {
+  border-radius: 13px !important;
+  border: 1px solid var(--apple-border) !important;
+}
+
+.layout .MuiSnackbarContent-root {
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  border-radius: 13px !important;
+  background: rgba(28, 28, 30, 0.92) !important;
+  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
+  box-shadow: var(--apple-shadow-float) !important;
+}
+
+.layout .MuiDivider-root {
+  border-color: var(--apple-divider) !important;
+}
+
+.layout .MuiSkeleton-root {
+  border-radius: 12px !important;
+  background: linear-gradient(
+    90deg,
+    rgba(118, 118, 128, 0.08),
+    rgba(118, 118, 128, 0.14),
+    rgba(118, 118, 128, 0.08)
+  ) !important;
+}
+
+/* Smooth, restrained Apple-like scrollbars.
+   Selectors are intentionally more specific than CVR's appended defaults. */
+.layout ::-webkit-scrollbar {
+  width: 10px !important;
+  height: 10px !important;
+  background: transparent !important;
+}
+
+.layout ::-webkit-scrollbar-thumb {
+  min-height: 36px;
+  border: 3px solid transparent !important;
+  border-radius: 999px !important;
+  background: rgba(60, 60, 67, 0.28) !important;
+  background-clip: padding-box !important;
+}
+
+.layout ::-webkit-scrollbar-thumb:hover {
+  background: rgba(60, 60, 67, 0.42) !important;
+  background-clip: padding-box !important;
+}
+
+/* =========================================================
+   13. Typography normalization
+   ========================================================= */
+
+.layout .MuiTypography-root,
+.layout .MuiButton-root,
+.layout .MuiInputBase-root,
+.layout .MuiMenuItem-root,
+.layout .MuiTab-root {
+  font-family: inherit !important;
+}
+
+.layout .MuiTypography-body1 {
+  font-size: 14px !important;
+  line-height: 1.55 !important;
+}
+
+.layout .MuiTypography-body2 {
+  font-size: 13px !important;
+  line-height: 1.5 !important;
+}
+
+.layout .MuiTypography-caption {
+  font-size: 12px !important;
+  line-height: 1.45 !important;
+}
+
+/* Preserve editor readability */
+.layout .monaco-editor,
+.layout .monaco-editor * {
+  letter-spacing: 0 !important;
+}
+
+/* =========================================================
+   14. Responsive safety
+   ========================================================= */
+
+@media (max-width: 980px) {
+  .layout .layout-content__left {
+    flex-basis: 202px !important;
+    width: 202px !important;
+    min-width: 202px !important;
+    max-width: 202px !important;
+  }
+
+  .layout .base-content {
+    width: 100% !important;
+    padding-left: 13px !important;
+    padding-right: 13px !important;
+  }
+
+  .layout .base-page > header {
+    padding-left: 18px !important;
+    padding-right: 18px !important;
+  }
+}
+
+@media (max-width: 760px) {
+  .layout .base-content {
+    width: 100% !important;
+    padding-left: 10px !important;
+    padding-right: 10px !important;
+  }
+
+  .layout
+    .base-content
+    > .MuiGrid-container
+    > .MuiGrid-root
+    > .MuiBox-root
+    > .MuiBox-root:first-child {
+    padding-left: 13px !important;
+    padding-right: 13px !important;
+  }
+
+  .layout
+    .base-content
+    > .MuiGrid-container
+    > .MuiGrid-root
+    > .MuiBox-root
+    > .MuiBox-root:last-child {
+    padding: 14px !important;
+  }
+}
+
+/* =========================================================
+   15. Responsive grid safety — keep native card columns
+   ========================================================= */
+
+.layout .base-content,
+.layout .base-content > .MuiGrid-container {
+  min-width: 0 !important;
+}
+
+/*
+ * Keep each Grid item shrinkable. This does not impose a custom column count;
+ * the application's own xs/sm/md Grid values remain in charge.
+ */
+.layout .base-content > .MuiGrid-container > .MuiGrid-root {
+  min-width: 0 !important;
+  max-width: 100%;
+}
+
+/* Avoid a horizontal scrollbar stealing the few pixels needed for two columns. */
+.layout .base-container > section {
+  overflow-x: hidden !important;
+}
+
+/* =========================================================
+   16. Apple Glass V4 — compact controls and precise hover fix
+   Base: V2 (V3's forced white rectangular layer is removed)
+   ========================================================= */
+
+/* ---------------------------------------------------------
+   16.1 Compact control benchmark
+   Use the app's normal MUI small-button visual height as baseline.
+   --------------------------------------------------------- */
+
+.layout {
+  --apple-button-height: 34px;
+  --apple-button-radius: 9px;
+  --apple-button-gap: 6px;
+}
+
+/* Normal text buttons: same compact vertical rhythm as "Test All". */
+.layout .MuiButton-root:not([class*="MuiButton-sizeLarge"]) {
+  min-height: var(--apple-button-height) !important;
+  height: var(--apple-button-height) !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  border-radius: var(--apple-button-radius) !important;
+  box-sizing: border-box !important;
+}
+
+/*
+ * Preserve explicitly circular icon-only action buttons such as the
+ * per-item refresh controls on the unlock-test cards.
+ */
+.layout
+  .MuiButton-root[style*="border-radius: 50%"],
+.layout
+  .MuiButton-root[style*="borderRadius: 50%"] {
+  min-height: 32px !important;
+  height: 32px !important;
+}
+
+/* ---------------------------------------------------------
+   16.2 All textual ButtonGroups become separate compact segments
+   Covers:
+   - Proxy: Rule / Global / Direct
+   - Connections: Active / Closed
+   - Settings: Light / Dark / System
+   --------------------------------------------------------- */
+
+.layout .MuiButtonGroup-root:has(> .MuiButton-root) {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: var(--apple-button-gap) !important;
+  padding: 0 !important;
+  overflow: visible !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.layout
+  .MuiButtonGroup-root:has(> .MuiButton-root)
+  > :is(
+    .MuiButton-root,
+    .MuiButtonGroup-grouped,
+    .MuiButtonGroup-firstButton,
+    .MuiButtonGroup-middleButton,
+    .MuiButtonGroup-lastButton
+  ) {
+  min-height: var(--apple-button-height) !important;
+  height: var(--apple-button-height) !important;
+  margin: 0 !important;
+  padding: 0 13px !important;
+  border: 1px solid rgba(0, 122, 255, 0.32) !important;
+  border-radius: var(--apple-button-radius) !important;
+  box-sizing: border-box !important;
+}
+
+/* Undo every connected-edge and overlapping-border rule from MUI. */
+.layout
+  .MuiButtonGroup-root:has(> .MuiButton-root)
+  > :is(.MuiButton-root, .MuiButtonGroup-grouped):not(:first-of-type) {
+  margin-left: 0 !important;
+  border-left: 1px solid rgba(0, 122, 255, 0.32) !important;
+}
+
+.layout
+  .MuiButtonGroup-root:has(> .MuiButton-root)
+  > :is(.MuiButton-root, .MuiButtonGroup-grouped):not(:last-of-type) {
+  border-right: 1px solid rgba(0, 122, 255, 0.32) !important;
+}
+
+/* Selected option remains filled, but no taller than other options. */
+.layout
+  .MuiButtonGroup-root:has(> .MuiButton-root)
+  > :is(.MuiButton-contained, .MuiButton-containedPrimary) {
+  color: #fff !important;
+  border-color: var(--apple-blue) !important;
+  background: linear-gradient(180deg, #0a84ff, var(--apple-blue)) !important;
+}
+
+/* ---------------------------------------------------------
+   16.3 Proxy-page header: modes and Chain Proxy have equal height
+   --------------------------------------------------------- */
+
+.layout
+  .base-page
+  > header
+  > .MuiBox-root:has(> .MuiButtonGroup-root > .MuiButton-root) {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+}
+
+.layout
+  .base-page
+  > header
+  > .MuiBox-root:has(> .MuiButtonGroup-root > .MuiButton-root)
+  > .MuiButtonGroup-root
+  > .MuiButton-root {
+  min-width: 64px !important;
+  min-height: var(--apple-button-height) !important;
+  height: var(--apple-button-height) !important;
+  padding: 0 13px !important;
+  margin: 0 !important;
+}
+
+.layout
+  .base-page
+  > header
+  > .MuiBox-root:has(> .MuiButtonGroup-root > .MuiButton-root)
+  > .MuiButton-root {
+  min-height: var(--apple-button-height) !important;
+  height: var(--apple-button-height) !important;
+  margin-left: 0 !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  border-radius: var(--apple-button-radius) !important;
+}
+
+/* ---------------------------------------------------------
+   16.4 Proxy-group hover: fix only the actual rounded header
+   No extra background is added to sticky wrappers or inner Boxes.
+   --------------------------------------------------------- */
+
+/*
+ * Proxy group headers are ListItemButtons containing both tool IconButtons
+ * and the proxy-count Chip. V2's generic ListItemButton hover tint made the
+ * original inline white background become translucent. Override that single
+ * hover state on the rounded ListItemButton itself.
+ */
+.layout
+  .base-page:has(
+    > header
+      .MuiButtonGroup-root
+      > .MuiButton-root
+  )
+  .base-container
+  .MuiListItemButton-root:has(.MuiChip-root):has(.MuiIconButton-root),
+.layout
+  .base-page:has(
+    > header
+      .MuiButtonGroup-root
+      > .MuiButton-root
+  )
+  .base-container
+  .MuiListItemButton-root:has(.MuiChip-root):has(.MuiIconButton-root):hover,
+.layout
+  .base-page:has(
+    > header
+      .MuiButtonGroup-root
+      > .MuiButton-root
+  )
+  .base-container
+  .MuiListItemButton-root:has(.MuiChip-root):has(.MuiIconButton-root):focus-visible {
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+}
+
+/* Keep the existing rounded card shape; do not create a rectangular layer. */
+.layout
+  .base-page:has(
+    > header
+      .MuiButtonGroup-root
+      > .MuiButton-root
+  )
+  .base-container
+  .MuiListItemButton-root:has(.MuiChip-root):has(.MuiIconButton-root) {
+  overflow: hidden !important;
+  border-radius: 14px !important;
+}
+
+/* ---------------------------------------------------------
+   16.5 Apple switch: smaller and mathematically centered
+   Track 44×26, thumb 22×22, 2px clearance on all sides.
+   --------------------------------------------------------- */
+
+.layout .MuiSwitch-root {
+  position: relative !important;
+  display: inline-flex !important;
+  flex: 0 0 44px !important;
+  width: 44px !important;
+  min-width: 44px !important;
+  height: 26px !important;
+  min-height: 26px !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  overflow: visible !important;
+  vertical-align: middle !important;
+  box-sizing: border-box !important;
+}
+
+.layout .MuiSwitch-switchBase {
+  position: absolute !important;
+  top: 2px !important;
+  left: 2px !important;
+  right: auto !important;
+  bottom: auto !important;
+  width: 22px !important;
+  height: 22px !important;
+  min-width: 22px !important;
+  min-height: 22px !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  line-height: 0 !important;
+  transform: translateX(0) !important;
+  z-index: 1 !important;
+  box-sizing: border-box !important;
+}
+
+.layout .MuiSwitch-switchBase.Mui-checked {
+  transform: translateX(18px) !important;
+}
+
+.layout .MuiSwitch-thumb {
+  display: block !important;
+  width: 22px !important;
+  height: 22px !important;
+  min-width: 22px !important;
+  min-height: 22px !important;
+  margin: 0 !important;
+  border-radius: 50% !important;
+  box-sizing: border-box !important;
+}
+
+.layout .MuiSwitch-track {
+  position: absolute !important;
+  inset: 0 !important;
+  display: block !important;
+  width: 44px !important;
+  height: 26px !important;
+  margin: 0 !important;
+  border-radius: 13px !important;
+  z-index: 0 !important;
+  box-sizing: border-box !important;
+}
+
+/* Vertically center rebuilt switches inside setting rows. */
+.layout .MuiFormControlLabel-root,
+.layout .MuiListItem-root:has(.MuiSwitch-root),
+.layout .MuiBox-root:has(> .MuiSwitch-root) {
+  align-items: center !important;
+}
+
+/* ---------------------------------------------------------
+   16.6 Home controls: keep alignment fix, but reduce V3 height
+   --------------------------------------------------------- */
+
+.layout
+  .base-content
+  > .MuiGrid-container
+  > .MuiGrid-root
+  > .MuiBox-root
+  > .MuiBox-root:last-child
+  > .MuiBox-root:has(> .MuiStack-root:first-child > .MuiPaper-root)
+  > .MuiStack-root:first-child {
+  width: 100% !important;
+  min-height: 48px !important;
+  height: 48px !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  gap: 8px !important;
+  align-items: stretch !important;
+  box-sizing: border-box !important;
+}
+
+.layout
+  .base-content
+  > .MuiGrid-container
+  > .MuiGrid-root
+  > .MuiBox-root
+  > .MuiBox-root:last-child
+  > .MuiBox-root:has(> .MuiStack-root:first-child > .MuiPaper-root)
+  > .MuiStack-root:first-child
+  > .MuiPaper-root {
+  flex: 1 1 0 !important;
+  width: auto !important;
+  min-width: 0 !important;
+  max-width: none !important;
+  min-height: 48px !important;
+  height: 48px !important;
+  margin: 0 !important;
+  padding: 7px 12px !important;
+  align-self: stretch !important;
+  box-sizing: border-box !important;
+  transform: none !important;
+}
+
+.layout
+  .base-content
+  > .MuiGrid-container
+  > .MuiGrid-root
+  > .MuiBox-root
+  > .MuiBox-root:last-child
+  > .MuiBox-root:has(> .MuiStack-root:first-child > .MuiPaper-root)
+  > .MuiStack-root:first-child
+  > .MuiPaper-root:hover {
+  transform: none !important;
+}
+
+/* Equal connector geometry under selected home controls. */
+.layout
+  .base-content
+  > .MuiGrid-container
+  > .MuiGrid-root
+  > .MuiBox-root
+  > .MuiBox-root:last-child
+  > .MuiBox-root:has(> .MuiStack-root:first-child > .MuiPaper-root)
+  > .MuiStack-root:first-child
+  > .MuiPaper-root::after {
+  bottom: -9px !important;
+  height: 9px !important;
+}
+
+/* Equal compact description boxes below both home control groups. */
+.layout
+  .base-content
+  > .MuiGrid-container
+  > .MuiGrid-root
+  > .MuiBox-root
+  > .MuiBox-root:last-child
+  > .MuiBox-root:has(> .MuiStack-root:first-child > .MuiPaper-root)
+  > .MuiBox-root:nth-child(2) {
+  width: 100% !important;
+  min-height: 38px !important;
+  height: 38px !important;
+  margin: 8px 0 0 !important;
+  padding: 0 !important;
+  align-items: stretch !important;
+  box-sizing: border-box !important;
+}
+
+.layout
+  .base-content
+  > .MuiGrid-container
+  > .MuiGrid-root
+  > .MuiBox-root
+  > .MuiBox-root:last-child
+  > .MuiBox-root:has(> .MuiStack-root:first-child > .MuiPaper-root)
+  > .MuiBox-root:nth-child(2)
+  > .MuiTypography-caption {
+  width: 100% !important;
+  min-height: 38px !important;
+  height: 38px !important;
+  margin: 0 !important;
+  padding: 0 10px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  box-sizing: border-box !important;
+}
+
+/* =========================================================
+   17. Apple Glass V5 — automatic dark-mode adaptation
+   ---------------------------------------------------------
+   Clash Verge Rev writes its resolved theme colors to inline
+   CSS variables on the document root. In dark mode the root
+   contains #2E303D / #1E1E1E, including when "System" mode
+   resolves to dark. This selector therefore follows the app's
+   actual mode rather than the operating system media query.
+   ========================================================= */
+
+/* Dark-mode selector used throughout this section:
+ *
+ * :is(:root, :scope)[data-css-injection-root]:is(
+ *   [style*="#2e303d" i],
+ *   [style*="#1e1e1e" i]
+ * )
+ */
+
+/* ---------------------------------------------------------
+   17.1 Dark Apple design tokens
+   --------------------------------------------------------- */
+
+:is(:root, :scope)[data-css-injection-root]:is(
+  [style*="#2e303d" i],
+  [style*="#1e1e1e" i]
+) .layout {
+  --apple-blue: #0a84ff;
+  --apple-blue-hover: #409cff;
+  --apple-green: #30d158;
+  --apple-red: #ff453a;
+  --apple-orange: #ff9f0a;
+
+  --apple-text: #f5f5f7;
+  --apple-text-2: rgba(235, 235, 245, 0.86);
+  --apple-text-3: rgba(235, 235, 245, 0.60);
+
+  --apple-bg: #1c1c1e;
+  --apple-sidebar: rgba(28, 28, 30, 0.90);
+  --apple-toolbar: rgba(28, 28, 30, 0.80);
+  --apple-card: rgba(44, 44, 46, 0.94);
+  --apple-card-solid: #2c2c2e;
+  --apple-control: rgba(118, 118, 128, 0.18);
+  --apple-control-hover: rgba(118, 118, 128, 0.28);
+  --apple-selected: rgba(10, 132, 255, 0.22);
+
+  --apple-border: rgba(255, 255, 255, 0.085);
+  --apple-border-strong: rgba(255, 255, 255, 0.15);
+  --apple-divider: rgba(84, 84, 88, 0.62);
+
+  --apple-shadow-card:
+    0 1px 2px rgba(0, 0, 0, 0.22),
+    0 10px 32px rgba(0, 0, 0, 0.30);
+  --apple-shadow-float:
+    0 18px 54px rgba(0, 0, 0, 0.52),
+    0 3px 10px rgba(0, 0, 0, 0.30);
+
+  color-scheme: dark;
+  color: var(--apple-text) !important;
+  background: var(--apple-bg) !important;
+}
+
+/* Keep the document outside the rounded application shell dark too. */
+:is(:root, :scope)[data-css-injection-root]:is(
+  [style*="#2e303d" i],
+  [style*="#1e1e1e" i]
+),
+:is(:root, :scope)[data-css-injection-root]:is(
+  [style*="#2e303d" i],
+  [style*="#1e1e1e" i]
+) body {
+  color-scheme: dark;
+  background-color: #1c1c1e !important;
+}
+
+/* ---------------------------------------------------------
+   17.2 Window shell, logo, sidebar and toolbar
+   --------------------------------------------------------- */
+
+:is(:root, :scope)[data-css-injection-root]:is(
+  [style*="#2e303d" i],
+  [style*="#1e1e1e" i]
+) .layout.windows,
+:is(:root, :scope)[data-css-injection-root]:is(
+  [style*="#2e303d" i],
+  [style*="#1e1e1e" i]
+) .layout.linux,
+:is(:root, :scope)[data-css-injection-root]:is(
+  [style*="#2e303d" i],
+  [style*="#1e1e1e" i]
+) .layout.unknown {
+  border-color: rgba(255, 255, 255, 0.12) !important;
+  background: var(--apple-bg) !important;
+}
+
+/* The bundled logo/wordmark is black in the light interface. */
+:is(:root, :scope)[data-css-injection-root]:is(
+  [style*="#2e303d" i],
+  [style*="#1e1e1e" i]
+) .layout .layout-content__left .the-logo > div > svg {
+  filter: brightness(0) invert(1) opacity(0.96) !important;
+}
+
+:is(:root, :scope)[data-css-injection-root]:is(
+  [style*="#2e303d" i],
+  [style*="#1e1e1e" i]
+) .layout .layout-content__left,
+:is(:root, :scope)[data-css-injection-root]:is(
+  [style*="#2e303d" i],
+  [style*="#1e1e1e" i]
+) .layout.layout--nav-collapsed .layout-content__left {
+  background: var(--apple-sidebar) !important;
+  border-right-color: var(--apple-divider) !important;
+}
+
+:is(:root, :scope)[data-css-injection-root]:is(
+  [style*="#2e303d" i],
+  [style*="#1e1e1e" i]
+) .layout .base-page > header {
+  background: var(--apple-toolbar) !important;
+  border-bottom-color: var(--apple-divider) !important;
+}
+
+:is(:root, :scope)[data-css-injection-root]:is(
+  [style*="#2e303d" i],
+  [style*="#1e1e1e" i]
+) .layout .base-page > header .MuiIconButton-root {
+  color: var(--apple-text-2) !important;
+}
+
+/* ---------------------------------------------------------
+   17.3 Page canvas and home cards
+   --------------------------------------------------------- */
+
+:is(:root, :scope)[data-css-injection-root]:is(
+  [style*="#2e303d" i],
+  [style*="#1e1e1e" i]
+) .layout .base-container > section {
+  background:
+    radial-gradient(circle at 13% -10%, rgba(10, 132, 255, 0.12), transparent 33%),
+    radial-gradient(circle at 88% 0%, rgba(191, 90, 242, 0.075), transparent 29%),
+    var(--apple-bg) !important;
+}
+
+:is(:root, :scope)[data-css-injection-root]:is(
+  [style*="#2e303d" i],
+  [style*="#1e1e1e" i]
+)
+  .layout
+  .base-content
+  > .MuiGrid-container
+  > .MuiGrid-root
+  > .MuiBox-root:hover {
+  border-color: rgba(255, 255, 255, 0.14) !important;
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.24),
+    0 13px 38px rgba(0, 0, 0, 0.34) !important;
+}
+
+:is(:root, :scope)[data-css-injection-root]:is(
+  [style*="#2e303d" i],
+  [style*="#1e1e1e" i]
+)
+  .layout
+  .base-content
+  > .MuiGrid-container
+  > .MuiGrid-root
+  > .MuiBox-root
+  > .MuiBox-root:first-child {
+  border-bottom-color: var(--apple-divider) !important;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(58, 58, 60, 0.88),
+      rgba(44, 44, 46, 0.54)
+    ) !important;
+}
+
+/* ---------------------------------------------------------
+   17.4 Buttons and segmented controls
+   --------------------------------------------------------- */
+
+:is(:root, :scope)[data-css-injection-root]:is(
+  [style*="#2e303d" i],
+  [style*="#1e1e1e" i]
+) .layout .MuiButton-containedPrimary {
+  border-color: rgba(255, 255, 255, 0.08) !important;
+  background: linear-gradient(180deg, #148cff, #0a84ff) !important;
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.18) !important;
+}
+
+:is(:root, :scope)[data-css-injection-root]:is(
+  [style*="#2e303d" i],
+  [style*="#1e1e1e" i]
+) .layout .MuiButton-containedPrimary:hover {
+  background: linear-gradient(180deg, #2997ff, #0077ed) !important;
+}
+
+:is(:root, :scope)[data-css-injection-root]:is(
+  [style*="#2e303d" i],
+  [style*="#1e1e1e" i]
+) .layout .MuiButton-outlined,
+:is(:root, :scope)[data-css-injection-root]:is(
+  [style*="#2e303d" i],
+  [style*="#1e1e1e" i]
+)
+  .layout
+  .base-page
+  > header
+  .MuiButtonGroup-root
+  .MuiButton-outlined {
+  color: var(--apple-blue) !important;
+  border-color: rgba(10, 132, 255, 0.48) !important;
+  background: rgba(58, 58, 60, 0.74) !important;
+}
+
+:is(:root, :scope)[data-css-injection-root]:is(
+  [style*="#2e303d" i],
+  [style*="#1e1e1e" i]
+) .layout .MuiButton-outlined:hover,
+:is(:root, :scope)[data-css-injection-root]:is(
+  [style*="#2e303d" i],
+  [style*="#1e1e1e" i]
+)
+  .layout
+  .base-page
+  > header
+  .MuiButtonGroup-root
+  .MuiButton-outlined:hover {
+  border-color: rgba(10, 132, 255, 0.68) !important;
+  background: rgba(10, 132, 255, 0.16) !important;
+}
+
+/* Inactive home mode tiles use a dark raised surface. */
+:is(:root, :scope)[data-css-injection-root]:is(
+  [style*="#2e303d" i],
+  [style*="#1e1e1e" i]
+)
+  .layout
+  .base-content
+  > .MuiGrid-container
+  > .MuiGrid-root
+  > .MuiBox-root
+  > .MuiBox-root:last-child
+  .MuiStack-root
+  > .MuiPaper-root:not([style*="background"]) {
+  background-color: rgba(58, 58, 60, 0.82) !important;
+}
+
+/* The small description boxes stay visible without becoming bright panels. */
+:is(:root, :scope)[data-css-injection-root]:is(
+  [style*="#2e303d" i],
+  [style*="#1e1e1e" i]
+)
+  .layout
+  .base-content
+  > .MuiGrid-container
+  > .MuiGrid-root
+  > .MuiBox-root
+  > .MuiBox-root:last-child
+  .MuiTypography-caption[style*="text-align"] {
+  color: var(--apple-text-3) !important;
+  border-color: rgba(10, 132, 255, 0.38) !important;
+  background: rgba(10, 132, 255, 0.085) !important;
+}
+
+/* ---------------------------------------------------------
+   17.5 Inputs, selects and search fields
+   --------------------------------------------------------- */
+
+:is(:root, :scope)[data-css-injection-root]:is(
+  [style*="#2e303d" i],
+  [style*="#1e1e1e" i]
+) .layout .MuiInputBase-root,
+:is(:root, :scope)[data-css-injection-root]:is(
+  [style*="#2e303d" i],
+  [style*="#1e1e1e" i]
+) .layout .MuiOutlinedInput-root,
+:is(:root, :scope)[data-css-injection-root]:is(
+  [style*="#2e303d" i],
+  [style*="#1e1e1e" i]
+) .layout .MuiFilledInput-root {
+  color: var(--apple-text) !important;
+  background: rgba(58, 58, 60, 0.72) !important;
+}
+
+:is(:root, :scope)[data-css-injection-root]:is(
+  [style*="#2e303d" i],
+  [style*="#1e1e1e" i]
+) .layout .MuiOutlinedInput-notchedOutline {
+  border-color: var(--apple-border-strong) !important;
+}
+
+:is(:root, :scope)[data-css-injection-root]:is(
+  [style*="#2e303d" i],
+  [style*="#1e1e1e" i]
+) .layout .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline {
+  border-color: rgba(255, 255, 255, 0.25) !important;
+}
+
+:is(:root, :scope)[data-css-injection-root]:is(
+  [style*="#2e303d" i],
+  [style*="#1e1e1e" i]
+) .layout .MuiOutlinedInput-root.Mui-focused {
+  color: var(--apple-text) !important;
+  background: #3a3a3c !important;
+  box-shadow: 0 0 0 3px rgba(10, 132, 255, 0.28) !important;
+}
+
+:is(:root, :scope)[data-css-injection-root]:is(
+  [style*="#2e303d" i],
+  [style*="#1e1e1e" i]
+) .layout .MuiInputBase-input::placeholder {
+  color: rgba(235, 235, 245, 0.42) !important;
+}
+
+/* ---------------------------------------------------------
+   17.6 Switches, checkboxes, chips and progress
+   --------------------------------------------------------- */
+
+:is(:root, :scope)[data-css-injection-root]:is(
+  [style*="#2e303d" i],
+  [style*="#1e1e1e" i]
+) .layout .MuiSwitch-track {
+  background: #48484a !important;
+  border-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+:is(:root, :scope)[data-css-injection-root]:is(
+  [style*="#2e303d" i],
+  [style*="#1e1e1e" i]
+) .layout .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track {
+  background: var(--apple-green) !important;
+  border-color: transparent !important;
+}
+
+:is(:root, :scope)[data-css-injection-root]:is(
+  [style*="#2e303d" i],
+  [style*="#1e1e1e" i]
+) .layout .MuiCheckbox-root,
+:is(:root, :scope)[data-css-injection-root]:is(
+  [style*="#2e303d" i],
+  [style*="#1e1e1e" i]
+) .layout .MuiRadio-root {
+  color: #8e8e93 !important;
+}
+
+:is(:root, :scope)[data-css-injection-root]:is(
+  [style*="#2e303d" i],
+  [style*="#1e1e1e" i]
+) .layout .MuiChip-outlined {
+  color: var(--apple-text-2) !important;
+  border-color: rgba(235, 235, 245, 0.23) !important;
+  background: rgba(118, 118, 128, 0.20) !important;
+}
+
+:is(:root, :scope)[data-css-injection-root]:is(
+  [style*="#2e303d" i],
+  [style*="#1e1e1e" i]
+) .layout .MuiLinearProgress-root {
+  background: rgba(10, 132, 255, 0.20) !important;
+}
+
+/* ---------------------------------------------------------
+   17.7 Dialogs, menus, popovers and floating surfaces
+   --------------------------------------------------------- */
+
+:is(:root, :scope)[data-css-injection-root]:is(
+  [style*="#2e303d" i],
+  [style*="#1e1e1e" i]
+) .layout .MuiBackdrop-root {
+  background: rgba(0, 0, 0, 0.48) !important;
+}
+
+:is(:root, :scope)[data-css-injection-root]:is(
+  [style*="#2e303d" i],
+  [style*="#1e1e1e" i]
+) .layout .MuiDialog-paper,
+:is(:root, :scope)[data-css-injection-root]:is(
+  [style*="#2e303d" i],
+  [style*="#1e1e1e" i]
+) .layout .MuiPopover-paper,
+:is(:root, :scope)[data-css-injection-root]:is(
+  [style*="#2e303d" i],
+  [style*="#1e1e1e" i]
+) .layout .MuiMenu-paper,
+:is(:root, :scope)[data-css-injection-root]:is(
+  [style*="#2e303d" i],
+  [style*="#1e1e1e" i]
+) .layout .MuiAutocomplete-paper {
+  color: var(--apple-text) !important;
+  border-color: var(--apple-border-strong) !important;
+  background: rgba(44, 44, 46, 0.97) !important;
+  background-color: rgba(44, 44, 46, 0.97) !important;
+}
+
+:is(:root, :scope)[data-css-injection-root]:is(
+  [style*="#2e303d" i],
+  [style*="#1e1e1e" i]
+) .layout .MuiDialogActions-root {
+  border-top-color: var(--apple-divider) !important;
+}
+
+:is(:root, :scope)[data-css-injection-root]:is(
+  [style*="#2e303d" i],
+  [style*="#1e1e1e" i]
+) .layout .MuiMenuItem-root:hover,
+:is(:root, :scope)[data-css-injection-root]:is(
+  [style*="#2e303d" i],
+  [style*="#1e1e1e" i]
+) .layout .MuiMenuItem-root.Mui-selected {
+  background: var(--apple-selected) !important;
+}
+
+/* ---------------------------------------------------------
+   17.8 Lists, cards, tables, tabs and settings pages
+   --------------------------------------------------------- */
+
+:is(:root, :scope)[data-css-injection-root]:is(
+  [style*="#2e303d" i],
+  [style*="#1e1e1e" i]
+) .layout .base-container .MuiCard-root,
+:is(:root, :scope)[data-css-injection-root]:is(
+  [style*="#2e303d" i],
+  [style*="#1e1e1e" i]
+) .layout .base-container .MuiAccordion-root,
+:is(:root, :scope)[data-css-injection-root]:is(
+  [style*="#2e303d" i],
+  [style*="#1e1e1e" i]
+) .layout .base-container .MuiTableContainer-root {
+  color: var(--apple-text) !important;
+  border-color: var(--apple-border) !important;
+  background: var(--apple-card) !important;
+}
+
+:is(:root, :scope)[data-css-injection-root]:is(
+  [style*="#2e303d" i],
+  [style*="#1e1e1e" i]
+) .layout .base-container .MuiListItemButton-root:hover {
+  background: var(--apple-control) !important;
+}
+
+:is(:root, :scope)[data-css-injection-root]:is(
+  [style*="#2e303d" i],
+  [style*="#1e1e1e" i]
+) .layout .MuiTableHead-root .MuiTableCell-root {
+  color: var(--apple-text-3) !important;
+  background: rgba(118, 118, 128, 0.13) !important;
+}
+
+:is(:root, :scope)[data-css-injection-root]:is(
+  [style*="#2e303d" i],
+  [style*="#1e1e1e" i]
+) .layout .MuiTableRow-root:hover .MuiTableCell-root {
+  background: rgba(10, 132, 255, 0.09) !important;
+}
+
+/* Settings and unlock cards are often plain Paper rather than Card. Only
+   recolor the large rounded page panels, not every Paper/node tile. */
+:is(:root, :scope)[data-css-injection-root]:is(
+  [style*="#2e303d" i],
+  [style*="#1e1e1e" i]
+)
+  .layout
+  .base-content
+  > .MuiGrid-container
+  > .MuiGrid-root
+  > .MuiPaper-root,
+:is(:root, :scope)[data-css-injection-root]:is(
+  [style*="#2e303d" i],
+  [style*="#1e1e1e" i]
+)
+  .layout
+  .base-content
+  > .MuiPaper-root {
+  color: var(--apple-text) !important;
+  border-color: var(--apple-border) !important;
+  background-color: var(--apple-card-solid) !important;
+}
+
+/* ---------------------------------------------------------
+   17.9 Proxy-group header hover — dark equivalent of V4 fix
+   --------------------------------------------------------- */
+
+:is(:root, :scope)[data-css-injection-root]:is(
+  [style*="#2e303d" i],
+  [style*="#1e1e1e" i]
+)
+  .layout
+  .base-page:has(
+    > header
+      .MuiButtonGroup-root
+      > .MuiButton-root
+  )
+  .base-container
+  .MuiListItemButton-root:has(.MuiChip-root):has(.MuiIconButton-root),
+:is(:root, :scope)[data-css-injection-root]:is(
+  [style*="#2e303d" i],
+  [style*="#1e1e1e" i]
+)
+  .layout
+  .base-page:has(
+    > header
+      .MuiButtonGroup-root
+      > .MuiButton-root
+  )
+  .base-container
+  .MuiListItemButton-root:has(.MuiChip-root):has(.MuiIconButton-root):hover,
+:is(:root, :scope)[data-css-injection-root]:is(
+  [style*="#2e303d" i],
+  [style*="#1e1e1e" i]
+)
+  .layout
+  .base-page:has(
+    > header
+      .MuiButtonGroup-root
+      > .MuiButton-root
+  )
+  .base-container
+  .MuiListItemButton-root:has(.MuiChip-root):has(.MuiIconButton-root):focus-visible {
+  color: var(--apple-text) !important;
+  background: var(--apple-card-solid) !important;
+  background-color: var(--apple-card-solid) !important;
+}
+
+/* ---------------------------------------------------------
+   17.10 Scrollbars, skeletons and secondary details
+   --------------------------------------------------------- */
+
+:is(:root, :scope)[data-css-injection-root]:is(
+  [style*="#2e303d" i],
+  [style*="#1e1e1e" i]
+) .layout .MuiSkeleton-root {
+  background: linear-gradient(
+    90deg,
+    rgba(118, 118, 128, 0.13),
+    rgba(118, 118, 128, 0.25),
+    rgba(118, 118, 128, 0.13)
+  ) !important;
+}
+
+:is(:root, :scope)[data-css-injection-root]:is(
+  [style*="#2e303d" i],
+  [style*="#1e1e1e" i]
+) .layout ::-webkit-scrollbar {
+  background: transparent !important;
+}
+
+:is(:root, :scope)[data-css-injection-root]:is(
+  [style*="#2e303d" i],
+  [style*="#1e1e1e" i]
+) .layout ::-webkit-scrollbar-thumb {
+  border-color: transparent !important;
+  background: rgba(235, 235, 245, 0.24) !important;
+  background-clip: padding-box !important;
+}
+
+:is(:root, :scope)[data-css-injection-root]:is(
+  [style*="#2e303d" i],
+  [style*="#1e1e1e" i]
+) .layout ::-webkit-scrollbar-thumb:hover {
+  background: rgba(235, 235, 245, 0.38) !important;
+  background-clip: padding-box !important;
+}
+
+/* Use a slightly lighter focus ring against dark surfaces. */
+:is(:root, :scope)[data-css-injection-root]:is(
+  [style*="#2e303d" i],
+  [style*="#1e1e1e" i]
+) .layout .MuiButton-root.Mui-focusVisible,
+:is(:root, :scope)[data-css-injection-root]:is(
+  [style*="#2e303d" i],
+  [style*="#1e1e1e" i]
+) .layout .MuiIconButton-root.Mui-focusVisible,
+:is(:root, :scope)[data-css-injection-root]:is(
+  [style*="#2e303d" i],
+  [style*="#1e1e1e" i]
+) .layout .MuiListItemButton-root.Mui-focusVisible {
+  box-shadow: 0 0 0 3px rgba(10, 132, 255, 0.32) !important;
+}
+
+/* =========================================================
+   18. Apple Glass V6 — Portal / Dialog / Popover adaptation
+   ---------------------------------------------------------
+   MUI Dialogs, Menus and Popovers are rendered through Portal
+   and may sit outside .layout. Therefore these selectors are
+   intentionally rooted at the CSS injection root, not .layout.
+   ========================================================= */
+
+/* ---------------------------------------------------------
+   18.1 Modal backdrop and dialog container
+   --------------------------------------------------------- */
+
+:is(:root, :scope)[data-css-injection-root] .MuiDialog-root,
+:is(:root, :scope)[data-css-injection-root] .MuiModal-root {
+  font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    "SF Pro Display",
+    "SF Pro Text",
+    "PingFang SC",
+    "PingFang TC",
+    "Segoe UI Variable Text",
+    "Segoe UI",
+    "Microsoft YaHei UI",
+    sans-serif !important;
+}
+
+:is(:root, :scope)[data-css-injection-root] .MuiDialog-backdrop,
+:is(:root, :scope)[data-css-injection-root] .MuiBackdrop-root {
+  background: rgba(24, 24, 27, 0.44) !important;
+  -webkit-backdrop-filter: blur(5px) saturate(112%);
+  backdrop-filter: blur(5px) saturate(112%);
+}
+
+:is(:root, :scope)[data-css-injection-root] .MuiDialog-container {
+  padding: 18px !important;
+  box-sizing: border-box !important;
+}
+
+/* ---------------------------------------------------------
+   18.2 Dialog paper — light mode
+   --------------------------------------------------------- */
+
+:is(:root, :scope)[data-css-injection-root] .MuiDialog-paper {
+  color: #1d1d1f !important;
+  overflow: hidden !important;
+  border: 1px solid rgba(0, 0, 0, 0.10) !important;
+  border-radius: 18px !important;
+  background: rgba(255, 255, 255, 0.97) !important;
+  background-color: rgba(255, 255, 255, 0.97) !important;
+  -webkit-backdrop-filter: saturate(180%) blur(28px);
+  backdrop-filter: saturate(180%) blur(28px);
+  box-shadow:
+    0 24px 70px rgba(0, 0, 0, 0.24),
+    0 4px 16px rgba(0, 0, 0, 0.10) !important;
+}
+
+/* Keep tall edit dialogs compact, but never clip their internal scroll area. */
+:is(:root, :scope)[data-css-injection-root]
+  .MuiDialog-paper:not(.MuiDialog-paperFullScreen) {
+  max-height: calc(100vh - 36px) !important;
+}
+
+/* ---------------------------------------------------------
+   18.3 Dialog title, body and footer
+   --------------------------------------------------------- */
+
+:is(:root, :scope)[data-css-injection-root] .MuiDialogTitle-root {
+  min-height: 58px !important;
+  padding: 18px 22px 12px !important;
+  color: #1d1d1f !important;
+  font-size: 21px !important;
+  line-height: 1.25 !important;
+  font-weight: 700 !important;
+  letter-spacing: -0.028em !important;
+  background: transparent !important;
+  box-sizing: border-box !important;
+}
+
+:is(:root, :scope)[data-css-injection-root] .MuiDialogContent-root {
+  padding: 12px 22px 18px !important;
+  color: #424245 !important;
+  background: transparent !important;
+  scrollbar-gutter: stable !important;
+}
+
+:is(:root, :scope)[data-css-injection-root] .MuiDialogContent-root.MuiDialogContent-dividers {
+  border-top-color: rgba(60, 60, 67, 0.14) !important;
+  border-bottom-color: rgba(60, 60, 67, 0.14) !important;
+}
+
+:is(:root, :scope)[data-css-injection-root] .MuiDialogContentText-root {
+  color: #6e6e73 !important;
+}
+
+:is(:root, :scope)[data-css-injection-root] .MuiDialogActions-root {
+  min-height: 58px !important;
+  padding: 10px 14px 14px !important;
+  gap: 8px !important;
+  border-top: 1px solid rgba(60, 60, 67, 0.14) !important;
+  background: rgba(248, 248, 250, 0.82) !important;
+  box-sizing: border-box !important;
+}
+
+:is(:root, :scope)[data-css-injection-root]
+  .MuiDialogActions-root
+  > :not(style)
+  ~ :not(style) {
+  margin-left: 0 !important;
+}
+
+/* ---------------------------------------------------------
+   18.4 Dialog form controls
+   --------------------------------------------------------- */
+
+:is(:root, :scope)[data-css-injection-root]
+  .MuiDialog-paper
+  .MuiFormControl-root {
+  margin-top: 7px;
+  margin-bottom: 7px;
+}
+
+:is(:root, :scope)[data-css-injection-root]
+  .MuiDialog-paper
+  :is(.MuiInputBase-root, .MuiOutlinedInput-root, .MuiFilledInput-root) {
+  min-height: 38px !important;
+  color: #1d1d1f !important;
+  border-radius: 10px !important;
+  background: rgba(248, 248, 250, 0.92) !important;
+  box-sizing: border-box !important;
+}
+
+:is(:root, :scope)[data-css-injection-root]
+  .MuiDialog-paper
+  .MuiOutlinedInput-notchedOutline {
+  border-color: rgba(60, 60, 67, 0.24) !important;
+  border-width: 1px !important;
+  border-radius: 10px !important;
+}
+
+:is(:root, :scope)[data-css-injection-root]
+  .MuiDialog-paper
+  .MuiOutlinedInput-root:hover
+  .MuiOutlinedInput-notchedOutline {
+  border-color: rgba(60, 60, 67, 0.38) !important;
+}
+
+:is(:root, :scope)[data-css-injection-root]
+  .MuiDialog-paper
+  .MuiOutlinedInput-root.Mui-focused {
+  background: #fff !important;
+  box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.20) !important;
+}
+
+:is(:root, :scope)[data-css-injection-root]
+  .MuiDialog-paper
+  .MuiOutlinedInput-root.Mui-focused
+  .MuiOutlinedInput-notchedOutline {
+  border-color: #007aff !important;
+}
+
+:is(:root, :scope)[data-css-injection-root]
+  .MuiDialog-paper
+  .MuiInputLabel-root {
+  color: #6e6e73 !important;
+}
+
+:is(:root, :scope)[data-css-injection-root]
+  .MuiDialog-paper
+  .MuiInputLabel-root.Mui-focused {
+  color: #007aff !important;
+}
+
+:is(:root, :scope)[data-css-injection-root]
+  .MuiDialog-paper
+  .MuiInputBase-input,
+:is(:root, :scope)[data-css-injection-root]
+  .MuiDialog-paper
+  textarea {
+  color: #1d1d1f !important;
+  font-size: 14px !important;
+  line-height: 1.48 !important;
+}
+
+:is(:root, :scope)[data-css-injection-root]
+  .MuiDialog-paper
+  textarea {
+  scrollbar-gutter: stable !important;
+}
+
+:is(:root, :scope)[data-css-injection-root]
+  .MuiDialog-paper
+  .MuiInputBase-input::placeholder,
+:is(:root, :scope)[data-css-injection-root]
+  .MuiDialog-paper
+  textarea::placeholder {
+  color: #8e8e93 !important;
+  opacity: 1 !important;
+}
+
+/* Multiline URL/configuration fields */
+:is(:root, :scope)[data-css-injection-root]
+  .MuiDialog-paper
+  .MuiInputBase-multiline {
+  padding-top: 10px !important;
+  padding-bottom: 10px !important;
+  align-items: flex-start !important;
+}
+
+/* Select arrow and input adornments */
+:is(:root, :scope)[data-css-injection-root]
+  .MuiDialog-paper
+  :is(.MuiSelect-icon, .MuiInputAdornment-root, .MuiSvgIcon-root) {
+  color: #6e6e73 !important;
+}
+
+/* ---------------------------------------------------------
+   18.5 Dialog buttons and icon actions
+   --------------------------------------------------------- */
+
+:is(:root, :scope)[data-css-injection-root]
+  .MuiDialog-paper
+  .MuiButton-root {
+  min-height: 34px !important;
+  height: 34px !important;
+  padding: 0 14px !important;
+  border-radius: 9px !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  text-transform: none !important;
+  box-sizing: border-box !important;
+}
+
+:is(:root, :scope)[data-css-injection-root]
+  .MuiDialog-paper
+  .MuiButton-containedPrimary {
+  color: #fff !important;
+  border: 1px solid rgba(0, 0, 0, 0.04) !important;
+  background: linear-gradient(180deg, #0a84ff, #007aff) !important;
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.18) !important;
+}
+
+:is(:root, :scope)[data-css-injection-root]
+  .MuiDialog-paper
+  .MuiButton-outlined {
+  color: #007aff !important;
+  border-color: rgba(0, 122, 255, 0.38) !important;
+  background: rgba(255, 255, 255, 0.82) !important;
+}
+
+:is(:root, :scope)[data-css-injection-root]
+  .MuiDialog-paper
+  .MuiButton-outlined:hover {
+  border-color: rgba(0, 122, 255, 0.58) !important;
+  background: rgba(0, 122, 255, 0.07) !important;
+}
+
+:is(:root, :scope)[data-css-injection-root]
+  .MuiDialog-paper
+  .MuiIconButton-root {
+  color: #424245 !important;
+  border-radius: 50% !important;
+}
+
+:is(:root, :scope)[data-css-injection-root]
+  .MuiDialog-paper
+  .MuiIconButton-root:hover {
+  background: rgba(118, 118, 128, 0.12) !important;
+}
+
+/* ---------------------------------------------------------
+   18.6 Portal switches — same compact V4 geometry
+   --------------------------------------------------------- */
+
+:is(:root, :scope)[data-css-injection-root]
+  .MuiDialog-paper
+  .MuiSwitch-root {
+  position: relative !important;
+  display: inline-flex !important;
+  flex: 0 0 44px !important;
+  width: 44px !important;
+  min-width: 44px !important;
+  height: 26px !important;
+  min-height: 26px !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  overflow: visible !important;
+  vertical-align: middle !important;
+  box-sizing: border-box !important;
+}
+
+:is(:root, :scope)[data-css-injection-root]
+  .MuiDialog-paper
+  .MuiSwitch-switchBase {
+  position: absolute !important;
+  top: 2px !important;
+  left: 2px !important;
+  width: 22px !important;
+  height: 22px !important;
+  min-width: 22px !important;
+  min-height: 22px !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  transform: translateX(0) !important;
+  z-index: 1 !important;
+}
+
+:is(:root, :scope)[data-css-injection-root]
+  .MuiDialog-paper
+  .MuiSwitch-switchBase.Mui-checked {
+  transform: translateX(18px) !important;
+}
+
+:is(:root, :scope)[data-css-injection-root]
+  .MuiDialog-paper
+  .MuiSwitch-thumb {
+  width: 22px !important;
+  height: 22px !important;
+  margin: 0 !important;
+  border-radius: 50% !important;
+  background: #fff !important;
+  box-sizing: border-box !important;
+}
+
+:is(:root, :scope)[data-css-injection-root]
+  .MuiDialog-paper
+  .MuiSwitch-track {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 44px !important;
+  height: 26px !important;
+  margin: 0 !important;
+  border-radius: 13px !important;
+  opacity: 1 !important;
+  background: #d1d1d6 !important;
+  border: 1px solid rgba(0, 0, 0, 0.06) !important;
+  box-sizing: border-box !important;
+}
+
+:is(:root, :scope)[data-css-injection-root]
+  .MuiDialog-paper
+  .MuiSwitch-switchBase.Mui-checked
+  + .MuiSwitch-track {
+  background: #34c759 !important;
+  border-color: transparent !important;
+}
+
+/* ---------------------------------------------------------
+   18.7 Dialog scrollbar
+   --------------------------------------------------------- */
+
+:is(:root, :scope)[data-css-injection-root]
+  .MuiDialog-paper
+  ::-webkit-scrollbar {
+  width: 10px !important;
+  height: 10px !important;
+  background: transparent !important;
+}
+
+:is(:root, :scope)[data-css-injection-root]
+  .MuiDialog-paper
+  ::-webkit-scrollbar-thumb {
+  min-height: 34px !important;
+  border: 3px solid transparent !important;
+  border-radius: 999px !important;
+  background: rgba(60, 60, 67, 0.28) !important;
+  background-clip: padding-box !important;
+}
+
+:is(:root, :scope)[data-css-injection-root]
+  .MuiDialog-paper
+  ::-webkit-scrollbar-thumb:hover {
+  background: rgba(60, 60, 67, 0.44) !important;
+  background-clip: padding-box !important;
+}
+
+/* ---------------------------------------------------------
+   18.8 Portal menus, select lists, autocomplete and popovers
+   --------------------------------------------------------- */
+
+:is(:root, :scope)[data-css-injection-root]
+  :is(
+    .MuiMenu-paper,
+    .MuiPopover-paper,
+    .MuiAutocomplete-paper,
+    .MuiSelect-root + .MuiPopover-root .MuiPaper-root
+  ) {
+  color: #1d1d1f !important;
+  padding: 5px !important;
+  overflow: hidden !important;
+  border: 1px solid rgba(0, 0, 0, 0.10) !important;
+  border-radius: 13px !important;
+  background: rgba(255, 255, 255, 0.97) !important;
+  background-color: rgba(255, 255, 255, 0.97) !important;
+  -webkit-backdrop-filter: saturate(180%) blur(24px);
+  backdrop-filter: saturate(180%) blur(24px);
+  box-shadow:
+    0 16px 48px rgba(0, 0, 0, 0.22),
+    0 3px 10px rgba(0, 0, 0, 0.08) !important;
+}
+
+:is(:root, :scope)[data-css-injection-root]
+  :is(.MuiMenu-paper, .MuiPopover-paper, .MuiAutocomplete-paper)
+  .MuiMenuItem-root,
+:is(:root, :scope)[data-css-injection-root]
+  .MuiAutocomplete-option {
+  min-height: 34px !important;
+  margin: 1px 0 !important;
+  border-radius: 8px !important;
+  color: #1d1d1f !important;
+  font-size: 14px !important;
+}
+
+:is(:root, :scope)[data-css-injection-root]
+  :is(.MuiMenuItem-root, .MuiAutocomplete-option):hover,
+:is(:root, :scope)[data-css-injection-root]
+  :is(.MuiMenuItem-root, .MuiAutocomplete-option).Mui-selected,
+:is(:root, :scope)[data-css-injection-root]
+  .MuiAutocomplete-option[aria-selected="true"] {
+  background: rgba(0, 122, 255, 0.12) !important;
+}
+
+/* ---------------------------------------------------------
+   18.9 Dark-mode Portal surfaces
+   --------------------------------------------------------- */
+
+:is(:root, :scope)[data-css-injection-root]:is(
+  [style*="#2e303d" i],
+  [style*="#1e1e1e" i]
+) .MuiDialog-backdrop,
+:is(:root, :scope)[data-css-injection-root]:is(
+  [style*="#2e303d" i],
+  [style*="#1e1e1e" i]
+) .MuiBackdrop-root {
+  background: rgba(0, 0, 0, 0.60) !important;
+}
+
+:is(:root, :scope)[data-css-injection-root]:is(
+  [style*="#2e303d" i],
+  [style*="#1e1e1e" i]
+) .MuiDialog-paper {
+  color: #f5f5f7 !important;
+  border-color: rgba(255, 255, 255, 0.12) !important;
+  background: rgba(44, 44, 46, 0.97) !important;
+  background-color: rgba(44, 44, 46, 0.97) !important;
+  box-shadow:
+    0 28px 78px rgba(0, 0, 0, 0.58),
+    0 4px 16px rgba(0, 0, 0, 0.34) !important;
+}
+
+:is(:root, :scope)[data-css-injection-root]:is(
+  [style*="#2e303d" i],
+  [style*="#1e1e1e" i]
+) .MuiDialogTitle-root {
+  color: #f5f5f7 !important;
+}
+
+:is(:root, :scope)[data-css-injection-root]:is(
+  [style*="#2e303d" i],
+  [style*="#1e1e1e" i]
+) .MuiDialogContent-root {
+  color: rgba(235, 235, 245, 0.86) !important;
+}
+
+:is(:root, :scope)[data-css-injection-root]:is(
+  [style*="#2e303d" i],
+  [style*="#1e1e1e" i]
+) .MuiDialogContentText-root {
+  color: rgba(235, 235, 245, 0.60) !important;
+}
+
+:is(:root, :scope)[data-css-injection-root]:is(
+  [style*="#2e303d" i],
+  [style*="#1e1e1e" i]
+) .MuiDialogActions-root {
+  border-top-color: rgba(84, 84, 88, 0.68) !important;
+  background: rgba(36, 36, 38, 0.88) !important;
+}
+
+:is(:root, :scope)[data-css-injection-root]:is(
+  [style*="#2e303d" i],
+  [style*="#1e1e1e" i]
+)
+  .MuiDialog-paper
+  :is(.MuiInputBase-root, .MuiOutlinedInput-root, .MuiFilledInput-root) {
+  color: #f5f5f7 !important;
+  background: rgba(58, 58, 60, 0.84) !important;
+}
+
+:is(:root, :scope)[data-css-injection-root]:is(
+  [style*="#2e303d" i],
+  [style*="#1e1e1e" i]
+)
+  .MuiDialog-paper
+  .MuiOutlinedInput-notchedOutline {
+  border-color: rgba(235, 235, 245, 0.20) !important;
+}
+
+:is(:root, :scope)[data-css-injection-root]:is(
+  [style*="#2e303d" i],
+  [style*="#1e1e1e" i]
+)
+  .MuiDialog-paper
+  .MuiOutlinedInput-root:hover
+  .MuiOutlinedInput-notchedOutline {
+  border-color: rgba(235, 235, 245, 0.34) !important;
+}
+
+:is(:root, :scope)[data-css-injection-root]:is(
+  [style*="#2e303d" i],
+  [style*="#1e1e1e" i]
+)
+  .MuiDialog-paper
+  .MuiOutlinedInput-root.Mui-focused {
+  background: #3a3a3c !important;
+  box-shadow: 0 0 0 3px rgba(10, 132, 255, 0.28) !important;
+}
+
+:is(:root, :scope)[data-css-injection-root]:is(
+  [style*="#2e303d" i],
+  [style*="#1e1e1e" i]
+)
+  .MuiDialog-paper
+  :is(.MuiInputBase-input, textarea) {
+  color: #f5f5f7 !important;
+}
+
+:is(:root, :scope)[data-css-injection-root]:is(
+  [style*="#2e303d" i],
+  [style*="#1e1e1e" i]
+)
+  .MuiDialog-paper
+  :is(.MuiInputBase-input, textarea)::placeholder {
+  color: rgba(235, 235, 245, 0.40) !important;
+}
+
+:is(:root, :scope)[data-css-injection-root]:is(
+  [style*="#2e303d" i],
+  [style*="#1e1e1e" i]
+)
+  .MuiDialog-paper
+  :is(.MuiInputLabel-root, .MuiSelect-icon, .MuiInputAdornment-root, .MuiSvgIcon-root) {
+  color: rgba(235, 235, 245, 0.60) !important;
+}
+
+:is(:root, :scope)[data-css-injection-root]:is(
+  [style*="#2e303d" i],
+  [style*="#1e1e1e" i]
+)
+  .MuiDialog-paper
+  .MuiButton-outlined {
+  color: #0a84ff !important;
+  border-color: rgba(10, 132, 255, 0.48) !important;
+  background: rgba(58, 58, 60, 0.78) !important;
+}
+
+:is(:root, :scope)[data-css-injection-root]:is(
+  [style*="#2e303d" i],
+  [style*="#1e1e1e" i]
+)
+  .MuiDialog-paper
+  .MuiButton-outlined:hover {
+  border-color: rgba(10, 132, 255, 0.68) !important;
+  background: rgba(10, 132, 255, 0.16) !important;
+}
+
+:is(:root, :scope)[data-css-injection-root]:is(
+  [style*="#2e303d" i],
+  [style*="#1e1e1e" i]
+)
+  .MuiDialog-paper
+  .MuiIconButton-root {
+  color: rgba(235, 235, 245, 0.86) !important;
+}
+
+:is(:root, :scope)[data-css-injection-root]:is(
+  [style*="#2e303d" i],
+  [style*="#1e1e1e" i]
+)
+  .MuiDialog-paper
+  .MuiIconButton-root:hover {
+  background: rgba(118, 118, 128, 0.26) !important;
+}
+
+:is(:root, :scope)[data-css-injection-root]:is(
+  [style*="#2e303d" i],
+  [style*="#1e1e1e" i]
+)
+  .MuiDialog-paper
+  .MuiSwitch-track {
+  background: #48484a !important;
+  border-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+:is(:root, :scope)[data-css-injection-root]:is(
+  [style*="#2e303d" i],
+  [style*="#1e1e1e" i]
+)
+  :is(.MuiMenu-paper, .MuiPopover-paper, .MuiAutocomplete-paper) {
+  color: #f5f5f7 !important;
+  border-color: rgba(255, 255, 255, 0.12) !important;
+  background: rgba(44, 44, 46, 0.98) !important;
+  background-color: rgba(44, 44, 46, 0.98) !important;
+  box-shadow:
+    0 18px 54px rgba(0, 0, 0, 0.56),
+    0 3px 10px rgba(0, 0, 0, 0.30) !important;
+}
+
+:is(:root, :scope)[data-css-injection-root]:is(
+  [style*="#2e303d" i],
+  [style*="#1e1e1e" i]
+)
+  :is(.MuiMenu-paper, .MuiPopover-paper, .MuiAutocomplete-paper)
+  :is(.MuiMenuItem-root, .MuiAutocomplete-option) {
+  color: #f5f5f7 !important;
+}
+
+:is(:root, :scope)[data-css-injection-root]:is(
+  [style*="#2e303d" i],
+  [style*="#1e1e1e" i]
+)
+  :is(.MuiMenuItem-root, .MuiAutocomplete-option):hover,
+:is(:root, :scope)[data-css-injection-root]:is(
+  [style*="#2e303d" i],
+  [style*="#1e1e1e" i]
+)
+  :is(.MuiMenuItem-root, .MuiAutocomplete-option).Mui-selected,
+:is(:root, :scope)[data-css-injection-root]:is(
+  [style*="#2e303d" i],
+  [style*="#1e1e1e" i]
+)
+  .MuiAutocomplete-option[aria-selected="true"] {
+  background: rgba(10, 132, 255, 0.20) !important;
+}
+
+:is(:root, :scope)[data-css-injection-root]:is(
+  [style*="#2e303d" i],
+  [style*="#1e1e1e" i]
+)
+  .MuiDialog-paper
+  ::-webkit-scrollbar-thumb {
+  background: rgba(235, 235, 245, 0.24) !important;
+  background-clip: padding-box !important;
+}
+
+:is(:root, :scope)[data-css-injection-root]:is(
+  [style*="#2e303d" i],
+  [style*="#1e1e1e" i]
+)
+  .MuiDialog-paper
+  ::-webkit-scrollbar-thumb:hover {
+  background: rgba(235, 235, 245, 0.38) !important;
+  background-clip: padding-box !important;
+}
+
+/* ---------------------------------------------------------
+   18.10 Fullscreen dialogs retain square application bounds
+   --------------------------------------------------------- */
+
+:is(:root, :scope)[data-css-injection-root]
+  .MuiDialog-paperFullScreen {
+  width: 100% !important;
+  height: 100% !important;
+  max-height: none !important;
+  margin: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+}
+
+/* =========================================================
+   19. Apple Glass V7 — dialog floating-label correction
+   ---------------------------------------------------------
+   Some subscription fields are initialized with default values,
+   but MUI does not always add MuiInputLabel-shrink in time.
+   Force one consistent floating-label geometry in Dialog portals.
+   ========================================================= */
+
+/* ---------------------------------------------------------
+   19.1 Always float outlined dialog labels
+   --------------------------------------------------------- */
+
+:is(:root, :scope)[data-css-injection-root]
+  .MuiDialog-paper
+  .MuiFormControl-root
+  > .MuiInputLabel-root,
+:is(:root, :scope)[data-css-injection-root]
+  .MuiDialog-paper
+  .MuiInputLabel-root.MuiInputLabel-formControl,
+:is(:root, :scope)[data-css-injection-root]
+  .MuiDialog-paper
+  .MuiInputLabel-root.MuiInputLabel-outlined,
+:is(:root, :scope)[data-css-injection-root]
+  .MuiDialog-paper
+  .MuiInputLabel-root.MuiInputLabel-shrink {
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  z-index: 2 !important;
+
+  max-width: calc(133% - 28px) !important;
+  padding: 0 4px !important;
+  margin: 0 !important;
+
+  color: #6e6e73 !important;
+  background: rgba(255, 255, 255, 0.97) !important;
+  background-color: rgba(255, 255, 255, 0.97) !important;
+
+  font-size: 12px !important;
+  line-height: 18px !important;
+  font-weight: 500 !important;
+  letter-spacing: -0.005em !important;
+
+  transform: translate(12px, -9px) scale(1) !important;
+  transform-origin: top left !important;
+  pointer-events: none !important;
+  white-space: nowrap !important;
+}
+
+/* Focus only changes color; geometry remains fixed. */
+:is(:root, :scope)[data-css-injection-root]
+  .MuiDialog-paper
+  .MuiInputLabel-root.Mui-focused {
+  color: #007aff !important;
+  transform: translate(12px, -9px) scale(1) !important;
+}
+
+/*
+ * The label has its own small surface, so the outline must not draw
+ * through the text even when MUI forgot to open the native legend notch.
+ */
+:is(:root, :scope)[data-css-injection-root]
+  .MuiDialog-paper
+  .MuiOutlinedInput-notchedOutline
+  > legend {
+  max-width: 0.01px !important;
+  padding: 0 !important;
+}
+
+/* ---------------------------------------------------------
+   19.2 Keep values vertically centred below the floated labels
+   --------------------------------------------------------- */
+
+:is(:root, :scope)[data-css-injection-root]
+  .MuiDialog-paper
+  .MuiOutlinedInput-root:not(.MuiInputBase-multiline)
+  .MuiInputBase-input {
+  padding-top: 9px !important;
+  padding-bottom: 9px !important;
+  box-sizing: border-box !important;
+}
+
+/* Select text follows the same compact baseline. */
+:is(:root, :scope)[data-css-injection-root]
+  .MuiDialog-paper
+  .MuiSelect-select {
+  min-height: 18px !important;
+  padding-top: 9px !important;
+  padding-bottom: 9px !important;
+  box-sizing: border-box !important;
+}
+
+/* Multiline fields retain their comfortable top/bottom padding. */
+:is(:root, :scope)[data-css-injection-root]
+  .MuiDialog-paper
+  .MuiInputBase-multiline
+  :is(.MuiInputBase-input, textarea) {
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+/* ---------------------------------------------------------
+   19.3 Defensive placeholder/value separation
+   --------------------------------------------------------- */
+
+/*
+ * Do not force placeholders to full opacity after the field has content.
+ * This is defensive for uncontrolled fields that update their value after
+ * the Dialog has mounted.
+ */
+:is(:root, :scope)[data-css-injection-root]
+  .MuiDialog-paper
+  :is(input, textarea):not(:placeholder-shown)::placeholder {
+  opacity: 0 !important;
+}
+
+:is(:root, :scope)[data-css-injection-root]
+  .MuiDialog-paper
+  :is(input, textarea):placeholder-shown::placeholder {
+  color: #8e8e93 !important;
+  opacity: 1 !important;
+}
+
+/* ---------------------------------------------------------
+   19.4 Dark-mode floating labels
+   --------------------------------------------------------- */
+
+:is(:root, :scope)[data-css-injection-root]:is(
+  [style*="#2e303d" i],
+  [style*="#1e1e1e" i]
+)
+  .MuiDialog-paper
+  .MuiFormControl-root
+  > .MuiInputLabel-root,
+:is(:root, :scope)[data-css-injection-root]:is(
+  [style*="#2e303d" i],
+  [style*="#1e1e1e" i]
+)
+  .MuiDialog-paper
+  .MuiInputLabel-root.MuiInputLabel-formControl,
+:is(:root, :scope)[data-css-injection-root]:is(
+  [style*="#2e303d" i],
+  [style*="#1e1e1e" i]
+)
+  .MuiDialog-paper
+  .MuiInputLabel-root.MuiInputLabel-outlined,
+:is(:root, :scope)[data-css-injection-root]:is(
+  [style*="#2e303d" i],
+  [style*="#1e1e1e" i]
+)
+  .MuiDialog-paper
+  .MuiInputLabel-root.MuiInputLabel-shrink {
+  color: rgba(235, 235, 245, 0.60) !important;
+  background: rgba(44, 44, 46, 0.97) !important;
+  background-color: rgba(44, 44, 46, 0.97) !important;
+}
+
+:is(:root, :scope)[data-css-injection-root]:is(
+  [style*="#2e303d" i],
+  [style*="#1e1e1e" i]
+)
+  .MuiDialog-paper
+  .MuiInputLabel-root.Mui-focused {
+  color: #0a84ff !important;
+}
+
+:is(:root, :scope)[data-css-injection-root]:is(
+  [style*="#2e303d" i],
+  [style*="#1e1e1e" i]
+)
+  .MuiDialog-paper
+  :is(input, textarea):placeholder-shown::placeholder {
+  color: rgba(235, 235, 245, 0.40) !important;
+}
+
+/* =========================================================
+   20. Apple Glass V8 — dialog switch row alignment
+   ---------------------------------------------------------
+   Several Miscellaneous-dialog rows use:
+     ListItemText(maxWidth: fit-content)
+     + TooltipIcon
+     + Switch(marginLeft: auto)
+   V6/V7 reset every Switch margin to zero with !important,
+   which removed the auto spacer and left those switches beside
+   the label. Restore right alignment only for direct ListItem
+   switch controls.
+   ========================================================= */
+
+/* Keep every switch-setting row full width and vertically centred. */
+:is(:root, :scope)[data-css-injection-root]
+  .MuiDialog-paper
+  .MuiListItem-root:has(> .MuiSwitch-root) {
+  width: 100% !important;
+  display: flex !important;
+  align-items: center !important;
+  box-sizing: border-box !important;
+}
+
+/*
+ * The auto left margin is the important part:
+ * it absorbs all remaining row space after label + optional help icon.
+ */
+:is(:root, :scope)[data-css-injection-root]
+  .MuiDialog-paper
+  .MuiListItem-root
+  > .MuiSwitch-root {
+  margin-top: 0 !important;
+  margin-right: 0 !important;
+  margin-bottom: 0 !important;
+  margin-left: auto !important;
+}
+
+/* Labels may shrink, while the switch keeps its compact 44×26 geometry. */
+:is(:root, :scope)[data-css-injection-root]
+  .MuiDialog-paper
+  .MuiListItem-root:has(> .MuiSwitch-root)
+  > .MuiListItemText-root {
+  min-width: 0 !important;
+}
+
+/* Help icons remain beside the label instead of consuming the right column. */
+:is(:root, :scope)[data-css-injection-root]
+  .MuiDialog-paper
+  .MuiListItem-root:has(> .MuiSwitch-root)
+  > :is(.MuiIconButton-root, .MuiSvgIcon-root):not(.MuiSwitch-root *) {
+  flex: 0 0 auto !important;
+}
+
+/*
+ * Defensive fallback for switch rows implemented with a Box/Stack instead
+ * of ListItem in other dialogs. Only direct-child switches are affected.
+ */
+:is(:root, :scope)[data-css-injection-root]
+  .MuiDialog-paper
+  :is(.MuiBox-root, .MuiStack-root):has(> .MuiSwitch-root)
+  > .MuiSwitch-root {
+  margin-left: auto !important;
+  margin-right: 0 !important;
+}
+
